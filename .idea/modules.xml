@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://C:\Users\dhht\Desktop\My_File\LiveTest-master\LiveTest.iml" filepath="C:\Users\dhht\Desktop\My_File\LiveTest-master\LiveTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/MyBiShe.iml" filepath="$PROJECT_DIR$/MyBiShe.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/library/library.iml" filepath="$PROJECT_DIR$/library/library.iml" />
+      <module fileurl="file://$PROJECT_DIR$/vitamio/vitamio.iml" filepath="$PROJECT_DIR$/vitamio/vitamio.iml" />
+    </modules>
+  </component>
+</project>
