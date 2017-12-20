@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -45,6 +46,7 @@ public class IMFragment extends BaseFragment<IMViewInterface,IMPresenter> implem
     private EditText mEtIMInput;
     private RecyclerView mRecyclerView;
     private TextView mTvImHead;
+    private RelativeLayout mRelativeLayout;
 
     private static List<MyMessage> mMessageList = new ArrayList<>();
     private static MyAdapter myAdapter;
@@ -148,6 +150,7 @@ public class IMFragment extends BaseFragment<IMViewInterface,IMPresenter> implem
         mEtIMInput = (EditText) view.findViewById(R.id.et_im_input);
         mRecyclerView = (RecyclerView) view.findViewById(R.id.rv_im);
         mTvImHead = (TextView) view.findViewById(R.id.tv_im_head);
+        mRelativeLayout = (RelativeLayout) view.findViewById(R.id.rl_im);
 
         Bundle bundle = getArguments();
         if(bundle != null){

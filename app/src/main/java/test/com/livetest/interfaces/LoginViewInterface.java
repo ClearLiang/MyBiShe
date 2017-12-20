@@ -1,5 +1,7 @@
 package test.com.livetest.interfaces;
 
+import java.util.TimerTask;
+
 /**
  * Created by dhht on 2017/12/7.
  */
@@ -13,5 +15,7 @@ public interface LoginViewInterface {
     void showMessage(String s);
     //跳转主界面
     void turnMainActivity(Class activity);
+    //定时器
+    TimerTask myTimer();
 
 }

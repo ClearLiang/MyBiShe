@@ -17,10 +17,9 @@
         android:layout_marginRight="8dp"
         android:layout_marginTop="8dp"
         android:layout_toLeftOf="@+id/iv_chat_imagr_right"
-        android:background="@color/colorPrimary"
         android:padding="8dp"
         android:text="把那些贩毒的关到小黑屋，枪毙五十次，快去"
-        android:textColor="@android:color/white" />
+        android:textColor="@color/chartreuse" />
 
     <ImageView
         android:id="@+id/iv_im_icon"

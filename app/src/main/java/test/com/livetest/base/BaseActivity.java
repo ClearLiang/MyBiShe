@@ -33,7 +33,7 @@ public abstract class BaseActivity<V,T extends BasePresenter<V>> extends AppComp
     protected void onStart() {
         super.onStart();
         if(isRegisterEventBus()){
-            EventBusUtils.register(this);
+            //EventBusUtils.register(this);
         }
     }
 

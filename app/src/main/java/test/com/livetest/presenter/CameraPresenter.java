@@ -1,11 +1,6 @@
 package test.com.livetest.presenter;
 
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-
-import test.com.livetest.R;
 import test.com.livetest.base.BasePresenter;
-import test.com.livetest.fragment.IMFragment;
 import test.com.livetest.interfaces.CameraViewInterface;
 
 /**

@@ -22,4 +22,5 @@ public class LoginPresenter extends BasePresenter<LoginViewInterface> {
             return "用户不存在";
         }
     }
+
 }

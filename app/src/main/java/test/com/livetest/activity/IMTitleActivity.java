@@ -1,7 +1,6 @@
 package test.com.livetest.activity;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
@@ -10,15 +9,15 @@ import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
-import com.example.clearliang.leancloud.R;
-import com.example.clearliang.leancloud.base.BaseActivity;
-import com.example.clearliang.leancloud.interfaces.IMTitleViewInterface;
-import com.example.clearliang.leancloud.presenter.IMTitlePresenter;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import test.com.livetest.R;
+import test.com.livetest.base.BaseActivity;
+import test.com.livetest.interfaces.IMTitleViewInterface;
+import test.com.livetest.presenter.IMTitlePresenter;
 
 
 @SuppressLint("Registered")
@@ -46,14 +45,14 @@ public class IMTitleActivity extends BaseActivity<IMTitleViewInterface,IMTitlePr
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Bundle bundle = getIntent().getExtras();
-                TextView textView = view.findViewById(R.id.tv_im_name);
+                TextView textView = (TextView) view.findViewById(R.id.tv_im_name);
                 String myName = bundle.getString("myName");
                 String toName = textView.getText().toString();
-
-                final Intent i = new Intent(IMTitleActivity.this,IMActivity.class);
+// TODO: 2017/12/20 Activity向fragment传值 
+                /*final Intent i = new Intent(IMTitleActivity.this,IMActivity.class);
                 i.putExtra("toName",toName);
                 i.putExtra("myName",myName);
-                startActivity(i);
+                startActivity(i);*/
             }
         });
     }
@@ -86,7 +85,7 @@ public class IMTitleActivity extends BaseActivity<IMTitleViewInterface,IMTitlePr
     }
 
     private void initView() {
-        mListView = findViewById(R.id.lv_im_title);
+        mListView = (ListView) findViewById(R.id.lv_im_title);
     }
 
 

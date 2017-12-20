@@ -66,6 +66,7 @@ public class CameraActivity extends BaseActivity<CameraViewInterface,CameraPrese
         FragmentTransaction ft = fragmentManager.beginTransaction();
         ft.replace(R.id.frame,fragment);
         ft.commit();
+
     }
 
     private void initPublisher() {
@@ -152,12 +153,12 @@ public class CameraActivity extends BaseActivity<CameraViewInterface,CameraPrese
                 break;
             //开关弹幕
             case R.id.btn_danmu:
-                if (mStartBarrageBtn.getText().toString().contentEquals("开启")) {
+                if (mStartBarrageBtn.getText().toString().equals("开启弹幕")) {
                     mPresenter.isStartBarrage(true);
-                    mStartBarrageBtn.setText("关闭");
-                } else if (mStartBarrageBtn.getText().toString().contentEquals("关闭")) {
+                    mStartBarrageBtn.setText("关闭弹幕");
+                } else if (mStartBarrageBtn.getText().toString().equals("关闭弹幕")) {
                     mPresenter.isStartBarrage(false);
-                    mStartBarrageBtn.setText("开启");
+                    mStartBarrageBtn.setText("开启弹幕");
                 }
                 break;
         }
