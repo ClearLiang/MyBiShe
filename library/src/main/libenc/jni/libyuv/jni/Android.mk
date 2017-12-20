@@ -67,5 +67,7 @@ LOCAL_LDLIBS := -llog
 LOCAL_MODULE := libyuv
 LOCAL_MODULE_TAGS := optional
 
+LOCAL_CFLAGS := -fPIC
+
 include $(BUILD_SHARED_LIBRARY)
 #include $(BUILD_STATIC_LIBRARY)

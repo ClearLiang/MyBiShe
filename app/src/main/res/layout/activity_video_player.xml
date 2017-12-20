@@ -1,36 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
     <EditText
-        android:id="@+id/url"
+        android:id="@+id/et_play_url"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="10dp"
-        android:text="rtmp://192.168.31.126:1935/live/livestream" />
+        android:text="rtmp://192.168.31.126:1935/live/livestream"
+        android:visibility="gone" />
 
     <LinearLayout
+        android:id="@+id/ll_player_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:layout_alignParentBottom="true">
 
         <Button
-            android:id="@+id/start"
+            android:id="@+id/btn_play_start"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Play" />
+            android:layout_weight="1"
+            android:text="播放" />
 
         <Button
-            android:id="@+id/stop"
+            android:id="@+id/btn_play_stop"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Stop" />
+            android:layout_weight="1"
+            android:text="暂停" />
+
+        <Button
+            android:id="@+id/btn_play_barrage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="开启弹幕" />
     </LinearLayout>
 
     <io.vov.vitamio.widget.VideoView
         android:id="@+id/surface_view"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-</LinearLayout>
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/ll_player_btn" />
+
+    <FrameLayout
+        android:id="@+id/frame_player"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/ll_player_btn"
+        android:visibility="gone">
+    </FrameLayout>
+
+</RelativeLayout>

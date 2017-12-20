@@ -35,7 +35,7 @@
             android:windowSoftInputMode="stateAlwaysHidden" />
 
         <activity
-            android:name=".MainActivity"
+            android:name="test.com.MyBiShe.activity.MainActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -45,10 +45,13 @@
         </activity>
 
         <activity
-            android:name=".CameraActivity"
+            android:name="test.com.MyBiShe.activity.CameraActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".PlayerActivity"
+            android:name="test.com.MyBiShe.activity.PlayerActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="test.com.MyBiShe.activity.ChooseActivity"
             android:screenOrientation="portrait" />
 
         <!-- 实时通信模块、推送（均需要加入以下声明） START -->
