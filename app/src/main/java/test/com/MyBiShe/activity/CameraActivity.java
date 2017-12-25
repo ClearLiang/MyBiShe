@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
+
 import com.github.faucamp.simplertmp.RtmpHandler;
 import com.seu.magicfilter.utils.MagicFilterType;
 
@@ -27,7 +28,6 @@ import java.net.SocketException;
 
 import test.com.MyBiShe.tools.EventBusUtils;
 import test.com.livetest.R;
-import test.com.MyBiShe.tools.SaveVideoManager;
 import test.com.MyBiShe.base.BaseActivity;
 import test.com.MyBiShe.fragment.IMFragment;
 import test.com.MyBiShe.interfaces.CameraViewInterface;
@@ -46,6 +46,8 @@ public class CameraActivity extends BaseActivity<CameraViewInterface,CameraPrese
     private String rtmpUrl;
     private FrameLayout mFrameLayout;
 
+
+
     @Override
     protected CameraPresenter createPresenter() {
         return new CameraPresenter(this);
@@ -55,7 +57,7 @@ public class CameraActivity extends BaseActivity<CameraViewInterface,CameraPrese
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-        setContentView(R.layout.activity_camera);
+        setContentView(R.layout.activity_video_push);
 
         initView();
         initPublisher();
@@ -66,7 +68,7 @@ public class CameraActivity extends BaseActivity<CameraViewInterface,CameraPrese
         IMFragment fragment = new IMFragment();
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction ft = fragmentManager.beginTransaction();
-        ft.replace(R.id.frame,fragment);
+        ft.replace(R.id.frame_video_push,fragment);
         ft.commit();
 
     }
@@ -91,26 +93,24 @@ public class CameraActivity extends BaseActivity<CameraViewInterface,CameraPrese
     }
 
     private void initView() {
-        mPublishBtn = (Button) findViewById(R.id.publish);
-        mCameraSwitchBtn = (Button) findViewById(R.id.swCam);
-        mEncoderBtn = (Button) findViewById(R.id.swEnc);
-        mStartBarrageBtn = (Button) findViewById(R.id.btn_danmu);
-        mRempUrlEt = (EditText) findViewById(R.id.et_play_url);
+        mPublishBtn = (Button) findViewById(R.id.btn_video_push_publish);
+        mCameraSwitchBtn = (Button) findViewById(R.id.btn_video_push_swCam);
+        mEncoderBtn = (Button) findViewById(R.id.btn_video_push_swEnc);
+        mStartBarrageBtn = (Button) findViewById(R.id.btn_video_push_barrage);
+        mRempUrlEt = (EditText) findViewById(R.id.et_video_push_url);
         mPublishBtn.setOnClickListener(this);
         mCameraSwitchBtn.setOnClickListener(this);
         mEncoderBtn.setOnClickListener(this);
         mStartBarrageBtn.setOnClickListener(this);
 
-        mFrameLayout = (FrameLayout) findViewById(R.id.frame);
+        mFrameLayout = (FrameLayout) findViewById(R.id.frame_video_push);
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             //开始/停止推流
-            case R.id.publish:
-                SaveVideoManager videoManager = new SaveVideoManager(getApplicationContext());
-
+            case R.id.btn_video_push_publish:
                 if (mPublishBtn.getText().toString().contentEquals("开始")) {
                     rtmpUrl = mRempUrlEt.getText().toString();
                     if (TextUtils.isEmpty(rtmpUrl)) {
@@ -118,9 +118,6 @@ public class CameraActivity extends BaseActivity<CameraViewInterface,CameraPrese
                     }
                     mPublisher.startPublish(rtmpUrl);
                     mPublisher.startCamera();
-
-                    /*开始在本地生成文件*/
-                    videoManager.StartSaveVideo();
 
                     if (mEncoderBtn.getText().toString().contentEquals("软编码")) {
                         Toast.makeText(getApplicationContext(), "当前使用硬编码", Toast.LENGTH_SHORT).show();
@@ -135,16 +132,14 @@ public class CameraActivity extends BaseActivity<CameraViewInterface,CameraPrese
                     mPublishBtn.setText("开始");
                     mEncoderBtn.setEnabled(true);
 
-                    /*完成在本地生成文件*/
-                    videoManager.StopSaveVideo();
                 }
                 break;
             //切换摄像头
-            case R.id.swCam:
+            case R.id.btn_video_push_swCam:
                 mPublisher.switchCameraFace((mPublisher.getCamraId() + 1) % Camera.getNumberOfCameras());
                 break;
             //切换编码方式
-            case R.id.swEnc:
+            case R.id.btn_video_push_swEnc:
                 if (mEncoderBtn.getText().toString().contentEquals("软编码")) {
                     mPublisher.switchToSoftEncoder();
                     mEncoderBtn.setText("硬编码");
@@ -154,7 +149,7 @@ public class CameraActivity extends BaseActivity<CameraViewInterface,CameraPrese
                 }
                 break;
             //开关弹幕
-            case R.id.btn_danmu:
+            case R.id.btn_video_push_barrage:
                 if (mStartBarrageBtn.getText().toString().equals("开启弹幕")) {
                     mPresenter.isStartBarrage(true);
                     mStartBarrageBtn.setText("关闭弹幕");

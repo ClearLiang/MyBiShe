@@ -4,7 +4,7 @@
     android:layout_height="match_parent">
 
     <EditText
-        android:id="@+id/et_play_url"
+        android:id="@+id/et_video_player_url"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="10dp"
@@ -12,28 +12,28 @@
         android:visibility="gone" />
 
     <LinearLayout
-        android:id="@+id/ll_player_btn"
+        android:id="@+id/ll_video_player_1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_alignParentBottom="true">
 
         <Button
-            android:id="@+id/btn_play_start"
+            android:id="@+id/btn_video_player_start"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="播放" />
 
         <Button
-            android:id="@+id/btn_play_stop"
+            android:id="@+id/btn_video_player_stop"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="暂停" />
 
         <Button
-            android:id="@+id/btn_play_barrage"
+            android:id="@+id/btn_video_player_barrage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -41,16 +41,16 @@
     </LinearLayout>
 
     <io.vov.vitamio.widget.VideoView
-        android:id="@+id/surface_view"
+        android:id="@+id/surface_video_player"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/ll_player_btn" />
+        android:layout_above="@+id/ll_video_player_1" />
 
     <FrameLayout
-        android:id="@+id/frame_player"
+        android:id="@+id/frame_video_player"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@id/ll_player_btn"
+        android:layout_above="@id/ll_video_player_1"
         android:visibility="gone">
     </FrameLayout>
 

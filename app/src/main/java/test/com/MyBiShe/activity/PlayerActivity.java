@@ -46,7 +46,7 @@ public class PlayerActivity extends BaseActivity<PlayViewInterface,PlayPresenter
         IMFragment fragment = new IMFragment();
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction ft = fragmentManager.beginTransaction();
-        ft.replace(R.id.frame_player,fragment);
+        ft.replace(R.id.frame_video_player,fragment);
         ft.commit();
     }
 
@@ -57,28 +57,28 @@ public class PlayerActivity extends BaseActivity<PlayViewInterface,PlayPresenter
     }
 
     private void initView() {
-        mEditText = (EditText) findViewById(R.id.et_play_url);
-        mVideoView = (VideoView) findViewById(R.id.surface_view);
-        mStartBtn = (Button) findViewById(R.id.btn_play_start);
-        mStopBtn = (Button) findViewById(R.id.btn_play_stop);
-        mBarrageBtn = (Button) findViewById(R.id.btn_play_barrage);
-        mFrameLayout = (FrameLayout) findViewById(R.id.frame_player);
+        mEditText = (EditText) findViewById(R.id.et_video_player_url);
+        mVideoView = (VideoView) findViewById(R.id.surface_video_player);
+        mStartBtn = (Button) findViewById(R.id.btn_video_player_start);
+        mStopBtn = (Button) findViewById(R.id.btn_video_player_stop);
+        mBarrageBtn = (Button) findViewById(R.id.btn_video_player_barrage);
+        mFrameLayout = (FrameLayout) findViewById(R.id.frame_video_player);
 
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.btn_play_start:
+            case R.id.btn_video_player_start:
                 path = mEditText.getText().toString();
                 if (!TextUtils.isEmpty(path)) {
                     mVideoView.setVideoPath(path);
                 }
                 break;
-            case R.id.btn_play_stop:
+            case R.id.btn_video_player_stop:
                 mVideoView.stopPlayback();
                 break;
-            case R.id.btn_play_barrage:
+            case R.id.btn_video_player_barrage:
                 if(mBarrageBtn.getText().toString().equals("开启弹幕")){
                     mFrameLayout.setVisibility(View.VISIBLE);
                     mBarrageBtn.setText("关闭弹幕");

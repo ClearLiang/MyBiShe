@@ -13,6 +13,8 @@ import com.jiangdg.mediacodec4mp4.utils.CameraManager;
 
 import java.io.File;
 
+import test.com.MyBiShe.activity.SaveVideoActivity;
+
 /**
  * Created by ClearLiang on 2017/12/19.
  */
@@ -23,10 +25,14 @@ public class SaveVideoManager {
     private RecordMp4 mRecordMp4;
     private Context mContext;
 
+
     public SaveVideoManager(Context context) {
         mContext = context;
     }
 
+    public RecordMp4 getRecordMp4(){
+        return mRecordMp4;
+    }
     /**
      * 开始录制
      * */
@@ -36,6 +42,9 @@ public class SaveVideoManager {
         mRecordMp4.init(mContext.getApplicationContext());
         // 2. 配置参数
         mRecordMp4.setEncodeParams(getEncodeParams());
+        // 水印类型，包含三种：时间，文字，两者均包含
+        mRecordMp4.setOverlayType(RecordMp4.OverlayType.BOTH);
+        mRecordMp4.setOverlayContent("我爱你，中国！");
         // 3. 开始录制
         mRecordMp4.startRecord();
     }
@@ -72,7 +81,7 @@ public class SaveVideoManager {
     /**
      * 对焦
      * */
-    public void enableFocus(){
+    public void EnableFocus(){
         if(mRecordMp4 != null){
             mRecordMp4.enableFocus(new CameraManager.OnCameraFocusResult() {
                 @Override
@@ -88,7 +97,7 @@ public class SaveVideoManager {
     /**
      * 拍照
      * */
-    public void takePicture(){
+    public void TakePicture(){
         String picPath = RecordMp4.ROOT_PATH+ File.separator+MyDate.getYMDString()+".jpg";
         if(mRecordMp4 != null)
             mRecordMp4.capturePicture(picPath, new SaveYuvImageTask.OnSaveYuvResultListener() {
@@ -99,5 +108,18 @@ public class SaveVideoManager {
             });
     }
 
+    /**
+     * 切换摄像头
+     * */
+    public void SwitchCamera(){
+        mRecordMp4.switchCamera();
+    }
+    /**
+     * 切换分辨率
+     * */
+    public void SwitchSize(){
+        // 切换分辨率
+        mRecordMp4.setPreviewSize(1280,720);
+    }
 
 }
