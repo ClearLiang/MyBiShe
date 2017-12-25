@@ -2,9 +2,9 @@ package test.com.MyBiShe.presenter;
 
 import android.support.v4.app.FragmentManager;
 
+import test.com.MyBiShe.fragment.RoomListFragment;
 import test.com.livetest.R;
 import test.com.MyBiShe.base.BasePresenter;
-import test.com.MyBiShe.fragment.LoginFragment;
 import test.com.MyBiShe.interfaces.MainViewInterface;
 
 /**
@@ -20,7 +20,8 @@ public class MainPresenter extends BasePresenter<MainViewInterface> {
 
     public void initFragment(FragmentManager manager) {
         manager.beginTransaction()
-                .add(R.id.container, LoginFragment.newInstance(), "login")
+                .add(R.id.frame_main_container, RoomListFragment.newInstance(), "直播列表")
                 .commit();
     }
+
 }

@@ -8,6 +8,7 @@ public class User {
     private String userId;
     private String userName;
     private String userHeadImg;
+    private String userPermissions;
 
     private static User sUser;
 
@@ -47,5 +48,13 @@ public class User {
 
     public void setUserHeadImg(String userHeadImg) {
         this.userHeadImg = userHeadImg;
+    }
+
+    public String getUserPermissions() {
+        return userPermissions;
+    }
+
+    public void setUserPermissions(String userPermissions) {
+        this.userPermissions = userPermissions;
     }
 }

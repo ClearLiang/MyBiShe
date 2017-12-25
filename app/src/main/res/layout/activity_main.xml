@@ -5,9 +5,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <FrameLayout
-        android:id="@+id/container"
+        android:id="@+id/frame_main_container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_above="@+id/navigation"
+        android:layout_alignParentStart="true">
 
     </FrameLayout>
 
@@ -17,8 +19,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
+        android:layout_marginBottom="200dp"
         android:layout_marginEnd="30dp"
-        android:layout_marginBottom="50dp"
         android:src="@android:drawable/ic_dialog_info"
         app:backgroundTint="#00ff00"
         app:borderWidth="0dp"
@@ -26,4 +28,12 @@
         app:fabSize="normal"
         app:pressedTranslationZ="10dp"
         app:rippleColor="#ff87ffeb" />
+
+    <android.support.design.widget.BottomNavigationView
+        android:id="@+id/navigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?android:attr/windowBackground"
+        android:layout_alignParentBottom="true"
+        app:menu="@menu/navigation" />
 </RelativeLayout>

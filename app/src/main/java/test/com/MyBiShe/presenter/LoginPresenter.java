@@ -1,11 +1,7 @@
 package test.com.MyBiShe.presenter;
 
 
-import android.support.v4.app.FragmentManager;
-
-import test.com.livetest.R;
 import test.com.MyBiShe.base.BasePresenter;
-import test.com.MyBiShe.fragment.IMTitleFragment;
 import test.com.MyBiShe.interfaces.LoginViewInterface;
 
 public class LoginPresenter extends BasePresenter<LoginViewInterface> {
@@ -25,13 +21,6 @@ public class LoginPresenter extends BasePresenter<LoginViewInterface> {
         }else{
             return "用户不存在";
         }
-    }
-
-    public void replaceFragment(FragmentManager manager) {
-
-        manager.beginTransaction()
-                .replace(R.id.container, IMTitleFragment.newInstance(), "IMTitle")
-                .commit();
     }
 
 }

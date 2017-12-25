@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">MyBiShe</string>
+
+    <string name="title_roomlist">直播列表</string>
+    <string name="title_video">视频录制</string>
+    <string name="title_my">个人中心</string>
 </resources>

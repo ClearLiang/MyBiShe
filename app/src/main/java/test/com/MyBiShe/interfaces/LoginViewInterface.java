@@ -15,7 +15,5 @@ public interface LoginViewInterface {
     void showMessage(String s);
     //跳转主界面
     void turnMainActivity();
-    //定时器
-    TimerTask myTimer();
 
 }

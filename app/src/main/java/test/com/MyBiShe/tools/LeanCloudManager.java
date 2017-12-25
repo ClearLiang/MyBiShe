@@ -25,6 +25,7 @@ import java.util.List;
 public class LeanCloudManager {
     private static final int ConversationType_OneOne = 0; // 两个人之间的单聊
     private static final int ConversationType_Group = 1;  // 多人之间的群聊
+    private String ChatRoomId = "";
     private static LeanCloudManager sLeanCloudManager;
     private String mMyName;
     private String mToName;
@@ -77,6 +78,21 @@ public class LeanCloudManager {
         });
     }
 
+    /**
+     *
+     * */
+    public void initConversation(){
+        // 创建名为“猫和老鼠”的对话
+        mClient.createConversation(Collections.<String>emptyList(), "猫和老鼠", null,true,
+                new AVIMConversationCreatedCallback() {
+                    @Override
+                    public void done(AVIMConversation conv, AVIMException e) {
+                        if (e == null) {
+                            // 创建成功
+                        }
+                    }
+                });
+    }
     /**
      * 发送信息
      * @param text      发送的内容
@@ -151,21 +167,40 @@ public class LeanCloudManager {
      * 创建聊天室
      * */
     public void CreateChatroom(){
-        AVIMClient tom = AVIMClient.getInstance(mMyName);
-        tom.open(new AVIMClientCallback(){
+        // 创建名为“猫和老鼠”的对话
+        mClient.createConversation(Collections.<String>emptyList(), "聊天室1", null,true,
+                new AVIMConversationCreatedCallback() {
+                    @Override
+                    public void done(AVIMConversation conv, AVIMException e) {
+                        if (e == null) {
+                            // 创建成功
+                            Log.i(TAG,"聊天室创建成功");
+                            ChatRoomId = conv.getConversationId();
+                        }
+                    }
+                });
 
+    }
+    /**
+     * 加入聊天室
+     * */
+    public void JoinChatroom(final String conversationId){
+        AVIMClient tom = AVIMClient.getInstance("Tom");
+        tom.open(new AVIMClientCallback() {
             @Override
-            public void done(AVIMClient client,AVIMException e){
+            public void done(AVIMClient avimClient, AVIMException e) {
                 if(e==null){
                     //登录成功
-                    //创建一个 名为 "聊天室1" 的暂态对话
-                    client.createConversation(Collections.<String>emptyList(),"聊天室1",null,true,
-                            new AVIMConversationCreatedCallback(){
-                                @Override
-                                public void done(AVIMConversation conv,AVIMException e){
-                                    Log.i(TAG,"聊天室创建成功");
-                                }
-                            });
+                    AVIMConversation conv = avimClient.getConversation(ChatRoomId);
+                    conv.join(new AVIMConversationCallback(){
+                        @Override
+                        public void done(AVIMException e){
+                            if(e==null){
+                                //加入成功
+                                Log.i(TAG,"加入成功");
+                            }
+                        }
+                    });
                 }
             }
         });

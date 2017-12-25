@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/login">
 
     <ImageView
         android:id="@+id/iv_login_head"
@@ -14,33 +16,35 @@
         android:id="@+id/ll_login_username"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@id/iv_login_head"
+        android:layout_marginTop="50dp"
         android:orientation="horizontal"
         android:paddingLeft="50dp"
-        android:paddingRight="50dp"
-        android:layout_marginTop="50dp"
-        android:layout_below="@id/iv_login_head">
+        android:paddingRight="50dp">
 
         <TextView
             android:id="@+id/tv_login_user"
             android:layout_width="100dp"
             android:layout_height="30dp"
-            android:text="用户名"
             android:gravity="left|center_vertical"
+            android:text="用户名"
             android:textSize="20sp" />
+
         <EditText
             android:id="@+id/et_login_user"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
     </LinearLayout>
+
     <LinearLayout
         android:id="@+id/ll_login_password"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@id/ll_login_username"
+        android:layout_marginTop="50dp"
         android:orientation="horizontal"
         android:paddingLeft="50dp"
-        android:paddingRight="50dp"
-        android:layout_marginTop="50dp"
-        android:layout_below="@id/ll_login_username">
+        android:paddingRight="50dp">
 
         <TextView
             android:id="@+id/tv_login_password"
@@ -49,22 +53,24 @@
             android:gravity="left|center_vertical"
             android:paddingRight="20dp"
             android:text="密码"
-            android:textSize="20sp"/>
+            android:textSize="20sp" />
+
         <EditText
             android:id="@+id/et_login_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textPassword"/>
+            android:inputType="textPassword" />
     </LinearLayout>
+
     <LinearLayout
         android:id="@+id/ll_login_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingLeft="50dp"
-        android:paddingRight="50dp"
-        android:orientation="horizontal"
         android:layout_below="@id/ll_login_password"
-        android:layout_marginTop="50dp">
+        android:layout_marginTop="50dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:paddingLeft="50dp">
 
         <Button
             android:id="@+id/btn_login_login"
@@ -72,17 +78,19 @@
             android:layout_height="wrap_content"
             android:layout_marginRight="50dp"
             android:layout_weight="1"
-            android:text="登陆" />
+            android:background="@drawable/item_btn_login"
+            android:text="登     陆"
+            android:textSize="20sp" />
 
         <Button
             android:id="@+id/btn_login_register"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="IM测试" />
+            android:paddingLeft="50dp"
+            android:text="IM测试"
+            android:visibility="gone" />
     </LinearLayout>
-
-
 
 
 </RelativeLayout>
