@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Map;
 
 import test.com.MyBiShe.activity.PlayerActivity;
+import test.com.MyBiShe.entity.User;
 import test.com.livetest.R;
 import test.com.MyBiShe.base.BaseFragment;
 import test.com.MyBiShe.entity.RoomInfo;
@@ -40,6 +41,8 @@ public class RoomListFragment extends BaseFragment<RoomListViewInterface,RoomLis
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_roomlist,container,false);
+        mBundle.putString("myName", User.getUser().getUserName());
+        mBundle.putString("toName", "空");
         initView(view);
         initEvent(view);
         initAdapter(view);
@@ -58,7 +61,7 @@ public class RoomListFragment extends BaseFragment<RoomListViewInterface,RoomLis
                 String roomNum = textView.getText().toString();
                 // TODO: 2017/12/20 这里根据房间名查询推流地址(未完成)
                 Intent intent = new Intent(view.getContext(),PlayerActivity.class);
-                intent.putExtra("roomUrl",RoomInfo.getUser().getPushUrl());
+                intent.putExtra("roomUrl",RoomInfo.getRoomInfo().getPushUrl());
                 startActivity(intent);
             }
         });

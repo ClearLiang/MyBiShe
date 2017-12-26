@@ -1,17 +1,22 @@
 package test.com.MyBiShe.presenter;
 
+import android.view.View;
+
 import com.avos.avoscloud.AVObject;
 
 import test.com.MyBiShe.base.BasePresenter;
-import test.com.MyBiShe.interfaces.IMViewInterface;
+import test.com.MyBiShe.interfaces.IMZhuboViewInterface;
 import test.com.MyBiShe.tools.LeanCloudManager;
 
+/**
+ * Created by ClearLiang on 2017/12/26.
+ */
 
-public class IMPresenter extends BasePresenter<IMViewInterface> {
-    IMViewInterface mIMViewInterface;
+public class IMZhuboPresenter extends BasePresenter<IMZhuboViewInterface> {
+    IMZhuboViewInterface mIMZhuboViewInterface;
 
-    public IMPresenter(IMViewInterface IMViewInterface) {
-        mIMViewInterface = IMViewInterface;
+    public IMZhuboPresenter(IMZhuboViewInterface IMZhuboViewInterface) {
+        mIMZhuboViewInterface = IMZhuboViewInterface;
     }
 
     public void sendMessage(String toName, final String text, boolean isTransient) {

@@ -12,7 +12,7 @@ public class RoomInfo {
 
     private static RoomInfo sRoomInfo;
 
-    public static RoomInfo getUser() {
+    public static RoomInfo getRoomInfo() {
         if (sRoomInfo == null) {
             synchronized (User.class) {
                 if (sRoomInfo == null) {

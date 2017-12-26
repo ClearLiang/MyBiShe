@@ -1,4 +1,4 @@
-package test.com.MyBiShe.fragment;
+package test.com.MyBiShe.activity;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -14,7 +14,6 @@ import com.jakewharton.rxbinding.view.RxView;
 import java.util.concurrent.TimeUnit;
 
 import rx.functions.Action1;
-import test.com.MyBiShe.activity.MainActivity;
 import test.com.MyBiShe.base.BaseActivity;
 import test.com.MyBiShe.entity.User;
 import test.com.MyBiShe.presenter.LoginPresenter;

@@ -1,6 +1,5 @@
 package test.com.MyBiShe.fragment;
 
-
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -11,11 +10,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.avos.avoscloud.AVObject;
 import com.avos.avoscloud.im.v2.AVIMClient;
 import com.avos.avoscloud.im.v2.AVIMConversation;
 import com.avos.avoscloud.im.v2.AVIMMessage;
@@ -30,19 +27,17 @@ import test.com.MyBiShe.adapter.MyAdapter;
 import test.com.MyBiShe.base.BaseFragment;
 import test.com.MyBiShe.entity.MyMessage;
 import test.com.MyBiShe.entity.User;
-import test.com.MyBiShe.interfaces.IMViewInterface;
-import test.com.MyBiShe.presenter.IMPresenter;
+import test.com.MyBiShe.interfaces.IMZhuboViewInterface;
+import test.com.MyBiShe.presenter.IMZhuboPresenter;
 import test.com.MyBiShe.tools.LeanCloudManager;
 import test.com.MyBiShe.tools.MyDate;
 import test.com.livetest.R;
 
 /**
- * Created by ClearLiang on 2017/12/19.
+ * Created by ClearLiang on 2017/12/26.
  */
 
-public class IMFragment extends BaseFragment<IMViewInterface,IMPresenter> implements IMViewInterface {
-    protected static AVObject testObject;
-
+public class IMZhuboFragment extends BaseFragment<IMZhuboViewInterface,IMZhuboPresenter> implements IMZhuboViewInterface {
     private Button mBtnIMSubmit;
     private EditText mEtIMInput;
     private RecyclerView mRecyclerView;
@@ -51,11 +46,6 @@ public class IMFragment extends BaseFragment<IMViewInterface,IMPresenter> implem
     private static List<MyMessage> mMessageList = new ArrayList<>();
     private static MyAdapter myAdapter;
     private LinearLayoutManager mLayoutManager;
-
-    @Override
-    protected IMPresenter createPresenter() {
-        return new IMPresenter(this);
-    }
 
     //接收到消息后的处理逻辑
     public class CustomMessageHandler extends AVIMMessageHandler {
@@ -80,13 +70,16 @@ public class IMFragment extends BaseFragment<IMViewInterface,IMPresenter> implem
         }
     }
 
+    @Override
+    protected IMZhuboPresenter createPresenter() {
+        return new IMZhuboPresenter(this);
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.activity_im,container,false);
-        testObject = mPresenter.initSave("LeanCloud");
 
-        LeanCloudManager.getInstance().JoinChatroom(mBundle.getString("myName"));
         initView(view);
         initEvent(view);
         initAdapter(view);
@@ -115,7 +108,6 @@ public class IMFragment extends BaseFragment<IMViewInterface,IMPresenter> implem
 
     }
 
-
     private void initEvent(final View view) {
         mBtnIMSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -135,7 +127,6 @@ public class IMFragment extends BaseFragment<IMViewInterface,IMPresenter> implem
                     mEtIMInput.setText("");
 
                     //发送到服务器
-                    //LeanCloudManager.getInstance().initClient(User.getUser().getUserName());
                     mPresenter.sendMessage(text);
                 }
             }
@@ -149,6 +140,7 @@ public class IMFragment extends BaseFragment<IMViewInterface,IMPresenter> implem
         mTvImHead = (TextView) view.findViewById(R.id.tv_im_head);
 
         mTvImHead.setText(mBundle.getString("toName"));
+
     }
 
     @Override
@@ -159,7 +151,6 @@ public class IMFragment extends BaseFragment<IMViewInterface,IMPresenter> implem
         }
         return false;
     }
-
 
     @Override
     public void onResume() {

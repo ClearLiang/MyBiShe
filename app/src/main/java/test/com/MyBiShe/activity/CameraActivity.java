@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -26,16 +27,18 @@ import net.ossrs.yasea.SrsRecordHandler;
 import java.io.IOException;
 import java.net.SocketException;
 
+import test.com.MyBiShe.entity.User;
+import test.com.MyBiShe.fragment.IMZhuboFragment;
 import test.com.MyBiShe.tools.EventBusUtils;
+import test.com.MyBiShe.tools.LeanCloudManager;
 import test.com.livetest.R;
 import test.com.MyBiShe.base.BaseActivity;
-import test.com.MyBiShe.fragment.IMFragment;
 import test.com.MyBiShe.interfaces.CameraViewInterface;
 import test.com.MyBiShe.presenter.CameraPresenter;
 
 
 public class CameraActivity extends BaseActivity<CameraViewInterface,CameraPresenter> implements SrsEncodeHandler.SrsEncodeListener, RtmpHandler.RtmpListener, SrsRecordHandler.SrsRecordListener, View.OnClickListener ,CameraViewInterface{
-    private static final String TAG = "CameraActivity";
+    private static final String TAG = "信息";
 
     private Button mPublishBtn;
     private Button mCameraSwitchBtn;
@@ -59,13 +62,18 @@ public class CameraActivity extends BaseActivity<CameraViewInterface,CameraPrese
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         setContentView(R.layout.activity_video_push);
 
+        LeanCloudManager.getInstance().initClient(User.getUser().getUserName());
+        Log.i(TAG,"初始化client的用户名是"+User.getUser().getUserName());
+        LeanCloudManager.getInstance().CreateConversation();
+
         initView();
         initPublisher();
         initBarrageFragment();
     }
 
     private void initBarrageFragment() {
-        IMFragment fragment = new IMFragment();
+
+        IMZhuboFragment fragment = new IMZhuboFragment();
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction ft = fragmentManager.beginTransaction();
         ft.replace(R.id.frame_video_push,fragment);

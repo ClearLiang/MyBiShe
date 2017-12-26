@@ -25,9 +25,9 @@ public class test extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.test);
-        LeanCloudManager.initIM(getApplicationContext(),APP_ID,APP_KEY);
+        /*LeanCloudManager.initIM(getApplicationContext(),APP_ID,APP_KEY);
         LeanCloudManager.getInstance().initClient("liang");
-        LeanCloudManager.getInstance().CreateChatroom();
+        LeanCloudManager.getInstance().CreateConversation();
 
         mButton = (Button) findViewById(R.id.btn_test);
         mButton.setOnClickListener(new View.OnClickListener() {
@@ -35,7 +35,7 @@ public class test extends AppCompatActivity {
             public void onClick(View view) {
                 
             }
-        });
+        });*/
 
     }
 }
