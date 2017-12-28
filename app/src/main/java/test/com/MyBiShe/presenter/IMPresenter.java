@@ -14,18 +14,4 @@ public class IMPresenter extends BasePresenter<IMViewInterface> {
         mIMViewInterface = IMViewInterface;
     }
 
-    public void sendMessage(String toName, final String text, boolean isTransient) {
-        LeanCloudManager.getInstance().sendMessage(toName,text,isTransient);
-    }
-    public void sendMessage(String text) {
-        LeanCloudManager.getInstance().sendMessage(text);
-    }
-
-    public AVObject initSave(String objectName){
-        AVObject avObject = LeanCloudManager.getInstance().save(objectName);
-        return avObject;
-    }
-    public void saveMessage(AVObject avObject, String myName, String toName, String content){
-        LeanCloudManager.getInstance().save(avObject,myName,toName,content);
-    }
 }

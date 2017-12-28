@@ -4,11 +4,15 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.avos.avoscloud.im.v2.AVIMClient;
+import com.avos.avoscloud.im.v2.AVIMException;
+import com.avos.avoscloud.im.v2.callback.AVIMClientCallback;
 import com.jakewharton.rxbinding.view.RxView;
 
 import java.util.concurrent.TimeUnit;
@@ -17,6 +21,7 @@ import rx.functions.Action1;
 import test.com.MyBiShe.base.BaseActivity;
 import test.com.MyBiShe.entity.User;
 import test.com.MyBiShe.presenter.LoginPresenter;
+import test.com.MyBiShe.tools.LeanCloudManager;
 import test.com.MyBiShe.tools.MyDate;
 import test.com.livetest.R;
 import test.com.MyBiShe.interfaces.LoginViewInterface;
@@ -42,11 +47,6 @@ public class LoginActivity extends BaseActivity<LoginViewInterface,LoginPresente
         setContentView(R.layout.activity_login);
         initView();
         initEvent();
-        /*Glide.with(this)
-                .load("")
-                .placeholder(R.drawable.icon_imgdefault)
-                .error(R.drawable.icon_imgfail)
-                .into(mIvLoginHead);*/
     }
 
     private void initView() {
@@ -63,8 +63,8 @@ public class LoginActivity extends BaseActivity<LoginViewInterface,LoginPresente
                 .subscribe(new Action1<Void>() {
                     @Override
                     public void call(Void aVoid) {
-                        mBundle.putString("myName",mEtLoginUser.getText().toString());
-                        turnMainActivity();
+                        login(mEtLoginUser.getText().toString());
+
                         /*switch (mPresenter.CheckUser(mEtLoginUser.getText().toString(), mEtLoginPassword.getText().toString())) {
                             case "成功":
                                 turnMainActivity();
@@ -114,15 +114,17 @@ public class LoginActivity extends BaseActivity<LoginViewInterface,LoginPresente
         Toast.makeText(getApplicationContext(),"欢迎 "+s+" 登陆", Toast.LENGTH_LONG).show();
     }
 
-    @Override
-    public void turnMainActivity() {
+    public void login(String myName) {
         /* 根据用户名默认初始化一个用户 */
         User.getUser().setUserId(MyDate.getHMS());
         User.getUser().setUserHeadImg(String.valueOf(R.drawable.icon_imgdefault));
-        User.getUser().setUserName(mEtLoginUser.getText().toString());
+        User.getUser().setUserName(myName);
         User.getUser().setUserPermissions("有");
+
+        LeanCloudManager.getInstance().initClient(myName);
         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
         startActivity(intent);
+
     }
 
 

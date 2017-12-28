@@ -13,6 +13,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.avos.avoscloud.AVObject;
 import com.avos.avoscloud.im.v2.AVIMClient;
 import com.avos.avoscloud.im.v2.AVIMConversation;
 import com.avos.avoscloud.im.v2.AVIMMessage;
@@ -47,6 +48,11 @@ public class IMZhuboFragment extends BaseFragment<IMZhuboViewInterface,IMZhuboPr
     private static MyAdapter myAdapter;
     private LinearLayoutManager mLayoutManager;
 
+    @Override
+    protected IMZhuboPresenter createPresenter() {
+        return new IMZhuboPresenter(this);
+    }
+
     //接收到消息后的处理逻辑
     public class CustomMessageHandler extends AVIMMessageHandler {
 
@@ -54,7 +60,7 @@ public class IMZhuboFragment extends BaseFragment<IMZhuboViewInterface,IMZhuboPr
         public void onMessage(AVIMMessage message, AVIMConversation conversation, AVIMClient client){
             if(message instanceof AVIMTextMessage){
                 MyMessage remsg = new MyMessage();
-                remsg.setName(mBundle.getString("toName"));
+                remsg.setName("");
                 remsg.setContent(((AVIMTextMessage) message).getText());
                 remsg.setType(MyMessage.TYPE_RECEIVE);
                 remsg.setTime(MyDate.getDate());
@@ -70,15 +76,11 @@ public class IMZhuboFragment extends BaseFragment<IMZhuboViewInterface,IMZhuboPr
         }
     }
 
-    @Override
-    protected IMZhuboPresenter createPresenter() {
-        return new IMZhuboPresenter(this);
-    }
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.activity_im,container,false);
+        createConversation();
 
         initView(view);
         initEvent(view);
@@ -108,15 +110,15 @@ public class IMZhuboFragment extends BaseFragment<IMZhuboViewInterface,IMZhuboPr
 
     }
 
-    private void initEvent(final View view) {
+    private void initEvent(View view) {
         mBtnIMSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String text = mEtIMInput.getText().toString();
                 //界面显示
-                if (!isEmptyInput(view)) {
+                if (!isEmptyInput(mEtIMInput.getText().toString())) {
                     MyMessage msg = new MyMessage();
-                    msg.setName(mBundle.getString("myName"));
+                    msg.setName(User.getUser().getUserName());
                     msg.setContent(text);
                     msg.setTime(MyDate.getDate());
                     msg.setType(MyMessage.TYPE_SEND);
@@ -125,10 +127,9 @@ public class IMZhuboFragment extends BaseFragment<IMZhuboViewInterface,IMZhuboPr
                     myAdapter.notifyItemInserted(mMessageList.size());//当有新消息时，刷新RecyclerView中的显示
                     mRecyclerView.scrollToPosition(mMessageList.size() - 1);//将RecyclerView定位到最后一行
                     mEtIMInput.setText("");
-
-                    //发送到服务器
-                    mPresenter.sendMessage(text);
                 }
+                //发送信息
+                sendIMMessage(text);
             }
         });
     }
@@ -138,18 +139,24 @@ public class IMZhuboFragment extends BaseFragment<IMZhuboViewInterface,IMZhuboPr
         mEtIMInput = (EditText) view.findViewById(R.id.et_im_input);
         mRecyclerView = (RecyclerView) view.findViewById(R.id.rv_im);
         mTvImHead = (TextView) view.findViewById(R.id.tv_im_head);
-
-        mTvImHead.setText(mBundle.getString("toName"));
-
     }
 
     @Override
-    public boolean isEmptyInput(View view) {
-        if(TextUtils.isEmpty(mEtIMInput.getText().toString())){
-            Toast.makeText(view.getContext(),"输入为空", Toast.LENGTH_LONG).show();
+    public boolean isEmptyInput(String input) {
+        if(TextUtils.isEmpty(input)){
+            Toast.makeText(getContext(),"输入为空", Toast.LENGTH_LONG).show();
             return true;
         }
         return false;
+    }
+
+    public void createConversation(){
+        // TODO: 2017/12/28 这里需要把房间id发送到服务器保存
+        String roomId = LeanCloudManager.getInstance().CreateConversation();
+
+    }
+    public void sendIMMessage(String text){
+        LeanCloudManager.getInstance().sendMessage(text);
     }
 
     @Override

@@ -1,8 +1,7 @@
 package test.com.MyBiShe.presenter;
 
-import android.view.View;
 
-import com.avos.avoscloud.AVObject;
+import android.util.Log;
 
 import test.com.MyBiShe.base.BasePresenter;
 import test.com.MyBiShe.interfaces.IMZhuboViewInterface;
@@ -19,18 +18,15 @@ public class IMZhuboPresenter extends BasePresenter<IMZhuboViewInterface> {
         mIMZhuboViewInterface = IMZhuboViewInterface;
     }
 
-    public void sendMessage(String toName, final String text, boolean isTransient) {
-        LeanCloudManager.getInstance().sendMessage(toName,text,isTransient);
+    public void log(){
+        Log.i("信息","测试");
     }
-    public void sendMessage(String text) {
+    public void createConversation(){
+        LeanCloudManager.getInstance().CreateConversation();
+    }
+
+    public void sendIMMessage(String text){
         LeanCloudManager.getInstance().sendMessage(text);
     }
 
-    public AVObject initSave(String objectName){
-        AVObject avObject = LeanCloudManager.getInstance().save(objectName);
-        return avObject;
-    }
-    public void saveMessage(AVObject avObject, String myName, String toName, String content){
-        LeanCloudManager.getInstance().save(avObject,myName,toName,content);
-    }
 }

@@ -5,10 +5,12 @@ package test.com.MyBiShe.entity;
  */
 
 public class RoomInfo {
-    private int id;
-    private String name;
     // TODO: 2017/12/20 这里需要设置推流地址
-    private String pushUrl = "rtmp://...";
+    private int id;                         //房间id
+    private String name;                    //房间名
+    private String pushUrl = "rtmp://...";  //推流地址
+    private String pullUrl = "rtmp://...";  //拉流地址
+    private String convId = "";             //会话id
 
     private static RoomInfo sRoomInfo;
 
@@ -48,5 +50,21 @@ public class RoomInfo {
 
     public void setPushUrl(String pushUrl) {
         this.pushUrl = pushUrl;
+    }
+
+    public String getPullUrl() {
+        return pullUrl;
+    }
+
+    public void setPullUrl(String pullUrl) {
+        this.pullUrl = pullUrl;
+    }
+
+    public String getConvId() {
+        return convId;
+    }
+
+    public void setConvId(String convId) {
+        this.convId = convId;
     }
 }

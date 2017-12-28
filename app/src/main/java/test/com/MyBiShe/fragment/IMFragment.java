@@ -6,6 +6,8 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,17 +20,23 @@ import android.widget.Toast;
 import com.avos.avoscloud.AVObject;
 import com.avos.avoscloud.im.v2.AVIMClient;
 import com.avos.avoscloud.im.v2.AVIMConversation;
+import com.avos.avoscloud.im.v2.AVIMException;
 import com.avos.avoscloud.im.v2.AVIMMessage;
 import com.avos.avoscloud.im.v2.AVIMMessageHandler;
 import com.avos.avoscloud.im.v2.AVIMMessageManager;
+import com.avos.avoscloud.im.v2.callback.AVIMClientCallback;
+import com.avos.avoscloud.im.v2.callback.AVIMConversationCallback;
+import com.avos.avoscloud.im.v2.callback.AVIMConversationCreatedCallback;
 import com.avos.avoscloud.im.v2.messages.AVIMTextMessage;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import test.com.MyBiShe.adapter.MyAdapter;
 import test.com.MyBiShe.base.BaseFragment;
 import test.com.MyBiShe.entity.MyMessage;
+import test.com.MyBiShe.entity.RoomInfo;
 import test.com.MyBiShe.entity.User;
 import test.com.MyBiShe.interfaces.IMViewInterface;
 import test.com.MyBiShe.presenter.IMPresenter;
@@ -41,8 +49,6 @@ import test.com.livetest.R;
  */
 
 public class IMFragment extends BaseFragment<IMViewInterface,IMPresenter> implements IMViewInterface {
-    protected static AVObject testObject;
-
     private Button mBtnIMSubmit;
     private EditText mEtIMInput;
     private RecyclerView mRecyclerView;
@@ -63,13 +69,13 @@ public class IMFragment extends BaseFragment<IMViewInterface,IMPresenter> implem
         @Override
         public void onMessage(AVIMMessage message, AVIMConversation conversation, AVIMClient client){
             if(message instanceof AVIMTextMessage){
-                MyMessage remsg = new MyMessage();
-                remsg.setName(mBundle.getString("toName"));
-                remsg.setContent(((AVIMTextMessage) message).getText());
-                remsg.setType(MyMessage.TYPE_RECEIVE);
-                remsg.setTime(MyDate.getDate());
-                remsg.setIcon(String.valueOf(R.drawable.icon_warning));
-                mMessageList.add(remsg);
+                MyMessage msg = new MyMessage();
+                msg.setName("");
+                msg.setContent(((AVIMTextMessage) message).getText());
+                msg.setType(MyMessage.TYPE_RECEIVE);
+                msg.setTime(MyDate.getDate());
+                msg.setIcon(String.valueOf(R.drawable.icon_warning));
+                mMessageList.add(msg);
                 myAdapter.notifyItemInserted(mMessageList.size());//当有新消息时，刷新RecyclerView中的显示
                 mRecyclerView.scrollToPosition(mMessageList.size() - 1);//将RecyclerView定位到最后一行
             }
@@ -84,12 +90,15 @@ public class IMFragment extends BaseFragment<IMViewInterface,IMPresenter> implem
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.activity_im,container,false);
-        testObject = mPresenter.initSave("LeanCloud");
 
-        LeanCloudManager.getInstance().JoinChatroom(mBundle.getString("myName"));
+        // TODO: 2017/12/28 这里需要从服务器获取会话id（即roomId）
+        joinConversation("5a4484447f6fd300602688cd");
+        //joinConversation(RoomInfo.getRoomInfo().getConvId());
+
         initView(view);
         initEvent(view);
         initAdapter(view);
+
         return view;
     }
 
@@ -115,16 +124,15 @@ public class IMFragment extends BaseFragment<IMViewInterface,IMPresenter> implem
 
     }
 
-
-    private void initEvent(final View view) {
+    private void initEvent(View view) {
         mBtnIMSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String text = mEtIMInput.getText().toString();
                 //界面显示
-                if (!isEmptyInput(view)) {
+                if (!isEmptyInput(text)) {
                     MyMessage msg = new MyMessage();
-                    msg.setName(mBundle.getString("myName"));
+                    msg.setName(User.getUser().getUserName());
                     msg.setContent(text);
                     msg.setTime(MyDate.getDate());
                     msg.setType(MyMessage.TYPE_SEND);
@@ -135,11 +143,17 @@ public class IMFragment extends BaseFragment<IMViewInterface,IMPresenter> implem
                     mEtIMInput.setText("");
 
                     //发送到服务器
-                    //LeanCloudManager.getInstance().initClient(User.getUser().getUserName());
-                    mPresenter.sendMessage(text);
+                    sendIMMessage(text);
                 }
             }
         });
+    }
+
+    public void joinConversation(String roomId){
+        LeanCloudManager.getInstance().JoinChatroom(roomId);
+    }
+    public void sendIMMessage(String text){
+        LeanCloudManager.getInstance().sendMessage(text);
     }
 
     private void initView(View view) {
@@ -148,22 +162,26 @@ public class IMFragment extends BaseFragment<IMViewInterface,IMPresenter> implem
         mRecyclerView = (RecyclerView) view.findViewById(R.id.rv_im);
         mTvImHead = (TextView) view.findViewById(R.id.tv_im_head);
 
-        mTvImHead.setText(mBundle.getString("toName"));
+        mTvImHead.setText("聊天室");
     }
 
     @Override
-    public boolean isEmptyInput(View view) {
-        if(TextUtils.isEmpty(mEtIMInput.getText().toString())){
-            Toast.makeText(view.getContext(),"输入为空", Toast.LENGTH_LONG).show();
+    public boolean isEmptyInput(String input) {
+        if(TextUtils.isEmpty(input)){
+            Toast.makeText(getContext(),"输入为空", Toast.LENGTH_LONG).show();
             return true;
         }
         return false;
     }
 
-
     @Override
     public void onResume() {
         super.onResume();
         AVIMMessageManager.registerDefaultMessageHandler(new CustomMessageHandler());
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
     }
 }

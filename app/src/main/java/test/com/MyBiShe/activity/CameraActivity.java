@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -16,6 +17,7 @@ import android.widget.FrameLayout;
 import android.widget.Toast;
 
 
+import com.avos.avoscloud.AVObject;
 import com.github.faucamp.simplertmp.RtmpHandler;
 import com.seu.magicfilter.utils.MagicFilterType;
 
@@ -49,8 +51,6 @@ public class CameraActivity extends BaseActivity<CameraViewInterface,CameraPrese
     private String rtmpUrl;
     private FrameLayout mFrameLayout;
 
-
-
     @Override
     protected CameraPresenter createPresenter() {
         return new CameraPresenter(this);
@@ -62,17 +62,12 @@ public class CameraActivity extends BaseActivity<CameraViewInterface,CameraPrese
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         setContentView(R.layout.activity_video_push);
 
-        LeanCloudManager.getInstance().initClient(User.getUser().getUserName());
-        Log.i(TAG,"初始化client的用户名是"+User.getUser().getUserName());
-        LeanCloudManager.getInstance().CreateConversation();
-
         initView();
         initPublisher();
         initBarrageFragment();
     }
 
     private void initBarrageFragment() {
-
         IMZhuboFragment fragment = new IMZhuboFragment();
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction ft = fragmentManager.beginTransaction();

@@ -7,5 +7,5 @@ import android.view.View;
  */
 
 public interface IMZhuboViewInterface {
-    boolean isEmptyInput(View view);
+    boolean isEmptyInput(String input);
 }

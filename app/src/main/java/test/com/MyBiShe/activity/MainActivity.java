@@ -23,6 +23,7 @@ import test.com.MyBiShe.fragment.MyFragment;
 import test.com.MyBiShe.fragment.RoomListFragment;
 import test.com.MyBiShe.fragment.StartLiveFragment;
 import test.com.MyBiShe.presenter.MainPresenter;
+import test.com.MyBiShe.tools.LeanCloudManager;
 import test.com.livetest.R;
 import test.com.MyBiShe.base.BaseActivity;
 import test.com.MyBiShe.interfaces.MainViewInterface;

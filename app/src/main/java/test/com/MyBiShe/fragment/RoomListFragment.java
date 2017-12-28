@@ -41,8 +41,7 @@ public class RoomListFragment extends BaseFragment<RoomListViewInterface,RoomLis
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_roomlist,container,false);
-        mBundle.putString("myName", User.getUser().getUserName());
-        mBundle.putString("toName", "空");
+
         initView(view);
         initEvent(view);
         initAdapter(view);
@@ -60,8 +59,11 @@ public class RoomListFragment extends BaseFragment<RoomListViewInterface,RoomLis
                 TextView textView = (TextView) view.findViewById(R.id.tv_roomlist_name);
                 String roomNum = textView.getText().toString();
                 // TODO: 2017/12/20 这里根据房间名查询推流地址(未完成)
+                RoomInfo.getRoomInfo().setId(i);
+                RoomInfo.getRoomInfo().setName(roomNum);
+                RoomInfo.getRoomInfo().setPushUrl("");
+
                 Intent intent = new Intent(view.getContext(),PlayerActivity.class);
-                intent.putExtra("roomUrl",RoomInfo.getRoomInfo().getPushUrl());
                 startActivity(intent);
             }
         });
@@ -73,7 +75,7 @@ public class RoomListFragment extends BaseFragment<RoomListViewInterface,RoomLis
         for(int i=0;i<5;i++){
             Map<String,Object> map = new HashMap<String,Object>() ;
             map.put("iv_roomlist_head", R.drawable.icon_warning) ;
-            map.put("tv_roomlist_name", "用户"+i) ;
+            map.put("tv_roomlist_name", String.valueOf("tom"+i)) ;
             list.add(map) ;
         }
         Map<String,Object> map = new HashMap<String,Object>() ;

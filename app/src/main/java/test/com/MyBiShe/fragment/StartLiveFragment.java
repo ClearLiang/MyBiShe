@@ -9,9 +9,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.avos.avoscloud.im.v2.AVIMClient;
+import com.avos.avoscloud.im.v2.AVIMConversation;
+import com.avos.avoscloud.im.v2.AVIMException;
+import com.avos.avoscloud.im.v2.callback.AVIMClientCallback;
+import com.avos.avoscloud.im.v2.callback.AVIMConversationCreatedCallback;
+
+import java.util.Arrays;
+import java.util.Collections;
+
 import test.com.MyBiShe.activity.CameraActivity;
 import test.com.MyBiShe.activity.SaveVideoActivity;
 import test.com.MyBiShe.base.BaseFragment;
+import test.com.MyBiShe.entity.User;
 import test.com.MyBiShe.interfaces.StartLiveInterface;
 import test.com.MyBiShe.presenter.StartLivePresenter;
 import test.com.livetest.R;

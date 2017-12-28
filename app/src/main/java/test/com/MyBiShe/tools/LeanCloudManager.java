@@ -25,6 +25,8 @@ import java.util.List;
 public class LeanCloudManager {
     private static final int ConversationType_OneOne = 0; // 两个人之间的单聊
     private static final int ConversationType_Group = 1;  // 多人之间的群聊
+    private static final String TAG = "信息：";
+
     private String ChatRoomId = "";
     private static LeanCloudManager sLeanCloudManager;
     private String mMyName;
@@ -32,7 +34,7 @@ public class LeanCloudManager {
     private Context mContext;
     private AVIMConversation mConversation;
     private AVIMClient mClient;
-    private static final String TAG = "信息：";
+    private AVObject object;
 
     public LeanCloudManager() {
     }
@@ -58,66 +60,38 @@ public class LeanCloudManager {
             throw new IllegalArgumentException("appKey can not be empty!");
         }
         AVOSCloud.initialize(context.getApplicationContext(),APP_ID,APP_KEY);
-        //todo 在正式运行时，去掉logo日志
         AVOSCloud.setDebugLogEnabled(false);
     }
     /**
-     * 创建对话
+     * 初始化Client
      * */
     public void initClient(String myName){
         mMyName = myName;
-        AVIMClient avimClient = AVIMClient.getInstance(myName);
-        mClient = avimClient;
-        mClient.open(new AVIMClientCallback(){
-            @Override
-            public void done(AVIMClient client,AVIMException e){
-                if(e==null){
+        final AVIMClient myClient = AVIMClient.getInstance(myName);
+        myClient.open(new AVIMClientCallback() {
+            public void done(AVIMClient client, AVIMException e) {
+                if (e == null) {
                     //登录成功后的逻辑
-                    Log.i(TAG,mMyName+"初始化open成功");
+                    mClient = myClient;
+                    Log.i(TAG,mMyName+"初始化Client成功");
                 }
             }
         });
+    }
+    /**
+     * 获取当前的 AVIMClient 实例
+     * @return
+     */
+    public AVIMClient getClient() {
+        if (mClient != null) {
+            return mClient;
+        }
+        return null;
     }
     /**
      * 发送信息
      * @param text      发送的内容
-     * @param isTransient   是否是聊天室
      * */
-    public void sendMessage(String toName, final String text, final boolean isTransient) {
-        if(TextUtils.isEmpty(toName) ||toName == null){
-            return;
-        }
-        mToName = toName;
-        // 与服务器连接
-        mClient.open(new AVIMClientCallback() {
-            @Override
-            public void done(AVIMClient client, AVIMException e) {
-                if (e == null) {
-                    // 创建与其他人之间的对话
-                    client.createConversation(Arrays.asList(mToName), mMyName+"和"+mToName+"的对话", null, isTransient, true,
-                            new AVIMConversationCreatedCallback() {
-                                @Override
-                                public void done(AVIMConversation conversation, AVIMException e) {
-                                    if (e == null) {
-                                        AVIMTextMessage msg = new AVIMTextMessage();
-                                        msg.setText(text);
-                                        // 发送消息
-                                        conversation.sendMessage(msg, new AVIMConversationCallback() {
-                                            @Override
-                                            public void done(AVIMException e) {
-                                                if (e == null) {
-                                                    Log.d(mMyName+" & "+mToName, "发送成功！");
-                                                }
-                                            }
-                                        });
-                                    }
-                                }
-                            });
-                }
-            }
-        });
-
-    }
     public void sendMessage(String text){
         AVIMTextMessage msg = new AVIMTextMessage();
         msg.setText(text);
@@ -131,11 +105,11 @@ public class LeanCloudManager {
                     }
                 }
             });
+        }else {
+            Log.d(TAG, "conversation对象为空！");
         }
-        Log.d(TAG, "conversation对象为空！");
 
     }
-
     /**
      * 关闭实时聊天
      * @param callback
@@ -148,27 +122,28 @@ public class LeanCloudManager {
             }
         });
     }
-
     /**
      * 初始化存储class
      * @param objectName
      * */
-    public AVObject save(String objectName){
-        AVObject testObject = new AVObject(objectName);//后台创建一个表名为testObject
-        return  testObject;
+    public void initAVObject(String objectName,String... items){
+        object = new AVObject(objectName);//后台创建一个表名为objectName
+        for(String item:items){
+            object.put("item",item);//向表中添加一列，列名为myName
+        }
+
     }
-    public void save(AVObject object, String myName, String toName, String content){
-        //信息存储
-        object.put("myName",myName);//向表中添加一列，列名为myName
-        object.put("toName",toName);
-        object.put("message",content);
+    public void saveAVObject(String... items){
+
+        for(String item:items){
+            object.put("item",item);//向表中添加一列，列名为item
+        }
         object.saveInBackground();//在后台进行保存
     }
-
     /**
      * 创建聊天室
      * */
-    public void CreateConversation(){
+    public String CreateConversation(){
         // 创建名为“name”的聊天室
         mClient.createConversation(Collections.<String>emptyList(), "聊天室1", null,true,
                 new AVIMConversationCreatedCallback() {
@@ -179,28 +154,32 @@ public class LeanCloudManager {
                             mConversation = conv;
                             Log.i(TAG,"聊天室创建成功");
                             ChatRoomId = conv.getConversationId();
+                        }else {
+                            Log.i(TAG,"聊天室创建失败");
                         }
                     }
                 });
-
+        return ChatRoomId;
     }
     /**
      * 加入聊天室
      * */
-    public void JoinChatroom(String myName){
-        AVIMClient tom = AVIMClient.getInstance(myName);
-        tom.open(new AVIMClientCallback() {
+    public void JoinChatroom(final String roomId){
+        mClient.open(new AVIMClientCallback() {
             @Override
             public void done(AVIMClient avimClient, AVIMException e) {
                 if(e==null){
                     //登录成功
-                    AVIMConversation conv = avimClient.getConversation(ChatRoomId);
+                    final AVIMConversation conv = avimClient.getConversation(roomId);
                     conv.join(new AVIMConversationCallback(){
                         @Override
                         public void done(AVIMException e){
                             if(e==null){
                                 //加入成功
-                                Log.i(TAG,"加入成功");
+                                mConversation = conv;
+                                Log.i(TAG,"加入聊天室成功");
+                            }else {
+                                Log.i(TAG,"加入聊天室失败");
                             }
                         }
                     });
@@ -298,14 +277,5 @@ public class LeanCloudManager {
         return mMyName;
     }
 
-    /**
-     * 获取当前的 AVIMClient 实例
-     * @return
-     */
-    public AVIMClient getClient() {
-        if (mClient != null) {
-            return mClient;
-        }
-        return null;
-    }
+
 }

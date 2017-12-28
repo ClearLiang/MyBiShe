@@ -12,6 +12,7 @@ import android.widget.FrameLayout;
 
 import io.vov.vitamio.LibsChecker;
 import io.vov.vitamio.widget.VideoView;
+import test.com.MyBiShe.entity.RoomInfo;
 import test.com.livetest.R;
 import test.com.MyBiShe.base.BaseActivity;
 import test.com.MyBiShe.fragment.IMFragment;
@@ -89,6 +90,8 @@ public class PlayerActivity extends BaseActivity<PlayViewInterface,PlayPresenter
                 break;
         }
     }
+
+
 
 
 }
