@@ -181,7 +181,10 @@ public class CameraActivity extends BaseActivity<CameraViewInterface,CameraPrese
         super.onDestroy();
         mPublisher.stopPublish();
         mPublisher.stopRecord();
+        mPublisher.stopCamera();
+        mPublisher.stopAudio();
         EventBusUtils.unregister(this);
+
     }
 
     @Override

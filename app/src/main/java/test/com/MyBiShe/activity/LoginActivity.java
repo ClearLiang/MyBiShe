@@ -1,5 +1,7 @@
 package test.com.MyBiShe.activity;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,6 +17,8 @@ import com.avos.avoscloud.im.v2.AVIMException;
 import com.avos.avoscloud.im.v2.callback.AVIMClientCallback;
 import com.jakewharton.rxbinding.view.RxView;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import rx.functions.Action1;
@@ -63,25 +67,29 @@ public class LoginActivity extends BaseActivity<LoginViewInterface,LoginPresente
                 .subscribe(new Action1<Void>() {
                     @Override
                     public void call(Void aVoid) {
-                        login(mEtLoginUser.getText().toString());
 
-                        /*switch (mPresenter.CheckUser(mEtLoginUser.getText().toString(), mEtLoginPassword.getText().toString())) {
+                        switch (mPresenter.CheckUser(mEtLoginUser.getText().toString(), mEtLoginPassword.getText().toString())) {
                             case "成功":
-                                turnMainActivity();
+                                login(mEtLoginUser.getText().toString());
+                                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                startActivity(intent);
                                 break;
+
                             case "密码错误":
                                 Toast.makeText(getApplicationContext(), "密码错误", Toast.LENGTH_LONG).show();
                                 mEtLoginPassword.setText("");
                                 break;
+
                             case "用户不存在":
                                 Toast.makeText(getApplicationContext(), "用户不存在", Toast.LENGTH_LONG).show();
                                 mEtLoginPassword.setText("");
                                 mEtLoginUser.setText("");
                                 break;
+
                             default:
                                 Toast.makeText(getApplicationContext(), "未知错误，请稍候再试", Toast.LENGTH_LONG).show();
                                 break;
-                        }*/
+                        }
                     }
                 });
         RxView.clicks(mBtnLoginRegister)
@@ -114,19 +122,17 @@ public class LoginActivity extends BaseActivity<LoginViewInterface,LoginPresente
         Toast.makeText(getApplicationContext(),"欢迎 "+s+" 登陆", Toast.LENGTH_LONG).show();
     }
 
-    public void login(String myName) {
+    public static void login(String myName) {
         /* 根据用户名默认初始化一个用户 */
+        // TODO: 2017/12/29  这里需要查询数据库用户信息
         User.getUser().setUserId(MyDate.getHMS());
         User.getUser().setUserHeadImg(String.valueOf(R.drawable.icon_imgdefault));
         User.getUser().setUserName(myName);
         User.getUser().setUserPermissions("有");
 
         LeanCloudManager.getInstance().initClient(myName);
-        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-        startActivity(intent);
 
     }
-
 
 
 }

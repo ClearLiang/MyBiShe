@@ -49,6 +49,7 @@
         <activity android:name="test.com.MyBiShe.activity.PlayerActivity" android:screenOrientation="portrait" />
         <activity android:name="test.com.MyBiShe.activity.SaveVideoActivity"/>
         <activity android:name="test.com.MyBiShe.activity.MainActivity"/>
+        <activity android:name="test.com.MyBiShe.activity.WelcomeActivity"/>
 
         <!-- 实时通信模块、推送（均需要加入以下声明） START -->
         <!-- 实时通信模块、推送都要使用 PushService -->

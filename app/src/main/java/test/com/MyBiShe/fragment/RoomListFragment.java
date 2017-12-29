@@ -78,10 +78,22 @@ public class RoomListFragment extends BaseFragment<RoomListViewInterface,RoomLis
             map.put("tv_roomlist_name", String.valueOf("tom"+i)) ;
             list.add(map) ;
         }
-        Map<String,Object> map = new HashMap<String,Object>() ;
-        map.put("iv_roomlist_head", R.drawable.icon_warning) ;
-        map.put("tv_roomlist_name", "Jerry") ;
-        list.add(map) ;
+        Map<String,Object> map1 = new HashMap<String,Object>() ;
+        map1.put("iv_roomlist_head", R.drawable.icon_warning) ;
+        map1.put("tv_roomlist_name", "Jerry") ;
+        list.add(map1) ;
+        Map<String,Object> map2 = new HashMap<String,Object>() ;
+        map2.put("iv_roomlist_head", R.drawable.icon_warning) ;
+        map2.put("tv_roomlist_name", "1") ;
+        list.add(map2);
+        Map<String,Object> map3 = new HashMap<String,Object>() ;
+        map3.put("iv_roomlist_head", R.drawable.icon_warning) ;
+        map3.put("tv_roomlist_name", "2") ;
+        list.add(map3);
+        Map<String,Object> map4 = new HashMap<String,Object>() ;
+        map4.put("iv_roomlist_head", R.drawable.icon_warning) ;
+        map4.put("tv_roomlist_name", "3") ;
+        list.add(map4);
 
         //2.准备SimpleAdapter对象
         // 准白

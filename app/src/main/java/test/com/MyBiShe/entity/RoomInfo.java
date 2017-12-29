@@ -2,6 +2,7 @@ package test.com.MyBiShe.entity;
 
 /**
  * Created by ClearLiang on 2017/12/20.
+ * 直播间单例
  */
 
 public class RoomInfo {

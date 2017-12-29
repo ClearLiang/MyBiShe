@@ -42,9 +42,9 @@ public class SaveVideoManager {
         mRecordMp4.init(mContext.getApplicationContext());
         // 2. 配置参数
         mRecordMp4.setEncodeParams(getEncodeParams());
-        // 水印类型，包含三种：时间，文字，两者均包含
+/*        // 水印类型，包含三种：时间，文字，两者均包含
         mRecordMp4.setOverlayType(RecordMp4.OverlayType.BOTH);
-        mRecordMp4.setOverlayContent("我爱你，中国！");
+        mRecordMp4.setOverlayContent("我爱你，中国！");*/
         // 3. 开始录制
         mRecordMp4.startRecord();
     }

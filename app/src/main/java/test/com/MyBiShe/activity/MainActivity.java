@@ -1,6 +1,8 @@
 package test.com.MyBiShe.activity;
 
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -9,16 +11,21 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.avos.avoscloud.im.v2.AVIMClient;
+import com.avos.avoscloud.im.v2.AVIMException;
+import com.avos.avoscloud.im.v2.callback.AVIMClientCallback;
 import com.jakewharton.rxbinding.view.RxView;
 
 import java.util.concurrent.TimeUnit;
 
 import rx.functions.Action1;
 import test.com.MyBiShe.entity.User;
+import test.com.MyBiShe.fragment.ManagerFragment;
 import test.com.MyBiShe.fragment.MyFragment;
 import test.com.MyBiShe.fragment.RoomListFragment;
 import test.com.MyBiShe.fragment.StartLiveFragment;
@@ -57,7 +64,10 @@ public class MainActivity extends BaseActivity<MainViewInterface,MainPresenter> 
                         switchFragment(RoomListFragment.newInstance());
                         return true;
                     case R.id.navigation_dashboard:
-                        switchFragment(StartLiveFragment.newInstance());
+                        if(User.getUser().getUserName().equals("3")){
+                            switchFragment(ManagerFragment.newInstance());
+                        }
+                        Toast.makeText(MainActivity.this,"您不具有管理的权限！",Toast.LENGTH_LONG).show();
                         return true;
                     case R.id.navigation_notifications:
                         switchFragment(MyFragment.newInstance());
@@ -80,11 +90,9 @@ public class MainActivity extends BaseActivity<MainViewInterface,MainPresenter> 
                 .subscribe(new Action1<Void>() {
                     @Override
                     public void call(Void aVoid) {
-                        if(User.getUser().getUserPermissions().equals("有")){
-                            FragmentManager fm = getSupportFragmentManager();
-                            FragmentTransaction ft = fm.beginTransaction();
-                            ft.replace(R.id.frame_main_container, StartLiveFragment.newInstance());
-                            ft.commit();
+                        if(User.getUser().getUserName().equals("2")){
+                            Intent intent = new Intent(MainActivity.this,CameraActivity.class);
+                            startActivity(intent);
                         }else {
                             Toast.makeText(MainActivity.this,User.getUser().getUserName()+"您不具有开启直播间权限!",Toast.LENGTH_LONG).show();
                         }
@@ -100,24 +108,27 @@ public class MainActivity extends BaseActivity<MainViewInterface,MainPresenter> 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if ((keyCode == KeyEvent.KEYCODE_BACK)) {
-            FragmentManager fm = getSupportFragmentManager();
-            FragmentTransaction ft = fm.beginTransaction();
-            ft.replace(R.id.frame_main_container, RoomListFragment.newInstance());
-            ft.commit();
+            showNormalDialog(MainActivity.this);
             return false;
         }else {
             return super.onKeyDown(keyCode, event);
         }
     }
 
-    private void showNormalDialog(){
-        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+    private void showNormalDialog(Context context){
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setMessage("确认退出吗？");
         builder.setTitle("提示");
         builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
+                LeanCloudManager.getInstance().close(new AVIMClientCallback() {
+                    @Override
+                    public void done(AVIMClient avimClient, AVIMException e) {
+                        Log.i(TAG,"Client关闭成功！");
+                    }
+                });
                 MainActivity.this.finish();
             }
         });

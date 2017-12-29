@@ -145,7 +145,7 @@ public class LeanCloudManager {
      * */
     public String CreateConversation(){
         // 创建名为“name”的聊天室
-        mClient.createConversation(Collections.<String>emptyList(), "聊天室1", null,true,
+        mClient.createConversation(Collections.<String>emptyList(), "聊天室1", null,true,true,
                 new AVIMConversationCreatedCallback() {
                     @Override
                     public void done(AVIMConversation conv, AVIMException e) {
