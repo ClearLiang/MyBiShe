@@ -1,6 +1,7 @@
 package test.com.MyBiShe.tools;
 
 import android.content.Context;
+import android.content.Intent;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -21,6 +22,10 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import test.com.MyBiShe.activity.CameraActivity;
+import test.com.MyBiShe.activity.MainActivity;
+import test.com.MyBiShe.entity.RoomInfo;
+
 
 public class LeanCloudManager {
     private static final int ConversationType_OneOne = 0; // 两个人之间的单聊
@@ -30,8 +35,6 @@ public class LeanCloudManager {
     private String ChatRoomId = "";
     private static LeanCloudManager sLeanCloudManager;
     private String mMyName;
-    private String mToName;
-    private Context mContext;
     private AVIMConversation mConversation;
     private AVIMClient mClient;
     private AVObject object;
@@ -92,6 +95,20 @@ public class LeanCloudManager {
      * 发送信息
      * @param text      发送的内容
      * */
+    /**
+     * 创建会话Conversation
+     * */
+    public void createConversation(String conversationName){
+        LeanCloudManager.getInstance().getClient().createConversation(
+                Collections.<String>emptyList(), conversationName, null, false, true, new AVIMConversationCreatedCallback() {
+                    @Override
+                    public void done(AVIMConversation avimConversation, AVIMException e) {
+                        RoomInfo.getRoomInfo().setConvId(avimConversation.getConversationId());
+                        Log.i(TAG,"创建广场成功");
+                        mConversation = avimConversation;
+                    }
+                });
+    }
     public void sendMessage(String text){
         AVIMTextMessage msg = new AVIMTextMessage();
         msg.setText(text);
@@ -143,7 +160,7 @@ public class LeanCloudManager {
     /**
      * 创建聊天室
      * */
-    public String CreateConversation(){
+    public String CreateRoomConversation(){
         // 创建名为“name”的聊天室
         mClient.createConversation(Collections.<String>emptyList(), "聊天室1", null,true,true,
                 new AVIMConversationCreatedCallback() {

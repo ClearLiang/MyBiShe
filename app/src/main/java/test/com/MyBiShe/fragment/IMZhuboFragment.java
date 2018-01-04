@@ -80,7 +80,6 @@ public class IMZhuboFragment extends BaseFragment<IMZhuboViewInterface,IMZhuboPr
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.activity_im,container,false);
-        createConversation();
 
         initView(view);
         initEvent(view);
@@ -150,11 +149,6 @@ public class IMZhuboFragment extends BaseFragment<IMZhuboViewInterface,IMZhuboPr
         return false;
     }
 
-    public void createConversation(){
-        // TODO: 2017/12/28 这里需要把房间id发送到服务器保存
-        String roomId = LeanCloudManager.getInstance().CreateConversation();
-
-    }
     public void sendIMMessage(String text){
         LeanCloudManager.getInstance().sendMessage(text);
     }

@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -22,9 +23,11 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import rx.functions.Action1;
+import test.com.MyBiShe.base.App;
 import test.com.MyBiShe.base.BaseActivity;
 import test.com.MyBiShe.entity.User;
 import test.com.MyBiShe.presenter.LoginPresenter;
+import test.com.MyBiShe.tools.AppManager;
 import test.com.MyBiShe.tools.LeanCloudManager;
 import test.com.MyBiShe.tools.MyDate;
 import test.com.livetest.R;
@@ -134,5 +137,11 @@ public class LoginActivity extends BaseActivity<LoginViewInterface,LoginPresente
 
     }
 
-
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if(keyCode  == KeyEvent.KEYCODE_BACK){
+            AppManager.getAppManager().finishActivity();
+        }
+        return super.onKeyDown(keyCode, event);
+    }
 }

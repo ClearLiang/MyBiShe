@@ -21,9 +21,6 @@ public class IMZhuboPresenter extends BasePresenter<IMZhuboViewInterface> {
     public void log(){
         Log.i("信息","测试");
     }
-    public void createConversation(){
-        LeanCloudManager.getInstance().CreateConversation();
-    }
 
     public void sendIMMessage(String text){
         LeanCloudManager.getInstance().sendMessage(text);

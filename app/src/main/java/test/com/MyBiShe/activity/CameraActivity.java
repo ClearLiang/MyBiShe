@@ -8,7 +8,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -17,7 +16,6 @@ import android.widget.FrameLayout;
 import android.widget.Toast;
 
 
-import com.avos.avoscloud.AVObject;
 import com.github.faucamp.simplertmp.RtmpHandler;
 import com.seu.magicfilter.utils.MagicFilterType;
 
@@ -29,7 +27,6 @@ import net.ossrs.yasea.SrsRecordHandler;
 import java.io.IOException;
 import java.net.SocketException;
 
-import test.com.MyBiShe.entity.User;
 import test.com.MyBiShe.fragment.IMZhuboFragment;
 import test.com.MyBiShe.tools.EventBusUtils;
 import test.com.MyBiShe.tools.LeanCloudManager;
@@ -51,6 +48,8 @@ public class CameraActivity extends BaseActivity<CameraViewInterface,CameraPrese
     private String rtmpUrl;
     private FrameLayout mFrameLayout;
 
+    protected IMZhuboFragment fragment;
+
     @Override
     protected CameraPresenter createPresenter() {
         return new CameraPresenter(this);
@@ -68,7 +67,12 @@ public class CameraActivity extends BaseActivity<CameraViewInterface,CameraPrese
     }
 
     private void initBarrageFragment() {
-        IMZhuboFragment fragment = new IMZhuboFragment();
+        if(LeanCloudManager.getInstance().getClient() == null){
+            Log.i(TAG,"没有登陆初始化Client");
+            finish();
+            return;
+        }
+        fragment = new IMZhuboFragment();
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction ft = fragmentManager.beginTransaction();
         ft.replace(R.id.frame_video_push,fragment);

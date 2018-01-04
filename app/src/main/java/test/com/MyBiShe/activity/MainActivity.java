@@ -9,8 +9,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -29,9 +27,7 @@ import test.com.MyBiShe.entity.User;
 import test.com.MyBiShe.fragment.ManagerFragment;
 import test.com.MyBiShe.fragment.MyFragment;
 import test.com.MyBiShe.fragment.RoomListFragment;
-import test.com.MyBiShe.fragment.StartLiveFragment;
 import test.com.MyBiShe.presenter.MainPresenter;
-import test.com.MyBiShe.tools.AppManager;
 import test.com.MyBiShe.tools.LeanCloudManager;
 import test.com.livetest.R;
 import test.com.MyBiShe.base.BaseActivity;
@@ -45,6 +41,11 @@ import test.com.MyBiShe.interfaces.MainViewInterface;
 public class MainActivity extends BaseActivity<MainViewInterface,MainPresenter> implements MainViewInterface {
     private FloatingActionButton mFab;
     private BottomNavigationView navigation;
+
+    @Override
+    protected MainPresenter createPresenter() {
+        return new MainPresenter(this);
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -94,18 +95,12 @@ public class MainActivity extends BaseActivity<MainViewInterface,MainPresenter> 
                     @Override
                     public void call(Void aVoid) {
                         if(User.getUser().getUserName().equals("2")||User.getUser().getUserName().equals("tom2")){
-                            Intent intent = new Intent(MainActivity.this,CameraActivity.class);
-                            startActivity(intent);
+                            gotoSquareConversation();
                         }else {
                             Toast.makeText(MainActivity.this,User.getUser().getUserName()+"您不具有开启直播间权限!",Toast.LENGTH_LONG).show();
                         }
                     }
                 });
-    }
-
-    @Override
-    protected MainPresenter createPresenter() {
-        return new MainPresenter(this);
     }
 
     @Override
@@ -120,7 +115,7 @@ public class MainActivity extends BaseActivity<MainViewInterface,MainPresenter> 
 
     private void showNormalDialog(Context context){
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setMessage("确认退出吗？");
+        builder.setMessage("确认注销吗？");
         builder.setTitle("提示");
         builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
             @Override
@@ -149,6 +144,11 @@ public class MainActivity extends BaseActivity<MainViewInterface,MainPresenter> 
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.frame_main_container, fragment, fragment.getTag())
                 .commit();
+    }
+    private void gotoSquareConversation() {
+        LeanCloudManager.getInstance().createConversation("聊天室");
+        Intent intent = new Intent(MainActivity.this, CameraActivity.class);
+        startActivity(intent);
     }
 
 }
