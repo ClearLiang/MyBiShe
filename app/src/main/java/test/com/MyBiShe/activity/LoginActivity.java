@@ -71,7 +71,7 @@ public class LoginActivity extends BaseActivity<LoginViewInterface,LoginPresente
                         switch (mPresenter.CheckUser(mEtLoginUser.getText().toString(), mEtLoginPassword.getText().toString())) {
                             case "成功":
                                 login(mEtLoginUser.getText().toString());
-                                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                Intent intent = new Intent(LoginActivity.this, WelcomeActivity.class);
                                 startActivity(intent);
                                 break;
 

@@ -12,7 +12,7 @@ public class LoginPresenter extends BasePresenter<LoginViewInterface> {
     }
 
     public String CheckUser(String user, String password){
-        if(user .equals("1")|| user .equals("2")||user .equals("3")){
+        if(user .equals("1")|| user .equals("2")||user .equals("3")||user.equals("tom1")||user.equals("tom2")||user.equals("tom3")){
             if(password.equals("123")){
                 return "成功";
             }else {

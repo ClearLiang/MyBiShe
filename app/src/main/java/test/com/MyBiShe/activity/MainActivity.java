@@ -1,5 +1,6 @@
 package test.com.MyBiShe.activity;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -30,6 +31,7 @@ import test.com.MyBiShe.fragment.MyFragment;
 import test.com.MyBiShe.fragment.RoomListFragment;
 import test.com.MyBiShe.fragment.StartLiveFragment;
 import test.com.MyBiShe.presenter.MainPresenter;
+import test.com.MyBiShe.tools.AppManager;
 import test.com.MyBiShe.tools.LeanCloudManager;
 import test.com.livetest.R;
 import test.com.MyBiShe.base.BaseActivity;
@@ -66,8 +68,9 @@ public class MainActivity extends BaseActivity<MainViewInterface,MainPresenter> 
                     case R.id.navigation_dashboard:
                         if(User.getUser().getUserName().equals("3")){
                             switchFragment(ManagerFragment.newInstance());
+                        }else {
+                            Toast.makeText(MainActivity.this,"您不具有管理的权限！",Toast.LENGTH_LONG).show();
                         }
-                        Toast.makeText(MainActivity.this,"您不具有管理的权限！",Toast.LENGTH_LONG).show();
                         return true;
                     case R.id.navigation_notifications:
                         switchFragment(MyFragment.newInstance());
@@ -79,9 +82,9 @@ public class MainActivity extends BaseActivity<MainViewInterface,MainPresenter> 
         });
     }
 
+    @SuppressLint("ResourceAsColor")
     private void initView() {
         mFab = (FloatingActionButton) findViewById(R.id.fab);
-
     }
 
     private void initEvent() {
@@ -90,7 +93,7 @@ public class MainActivity extends BaseActivity<MainViewInterface,MainPresenter> 
                 .subscribe(new Action1<Void>() {
                     @Override
                     public void call(Void aVoid) {
-                        if(User.getUser().getUserName().equals("2")){
+                        if(User.getUser().getUserName().equals("2")||User.getUser().getUserName().equals("tom2")){
                             Intent intent = new Intent(MainActivity.this,CameraActivity.class);
                             startActivity(intent);
                         }else {
@@ -129,7 +132,8 @@ public class MainActivity extends BaseActivity<MainViewInterface,MainPresenter> 
                         Log.i(TAG,"Client关闭成功！");
                     }
                 });
-                MainActivity.this.finish();
+                Intent intent = new Intent(MainActivity.this,LoginActivity.class);
+                startActivity(intent);
             }
         });
         builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
