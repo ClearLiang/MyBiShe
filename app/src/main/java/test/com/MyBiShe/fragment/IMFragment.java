@@ -92,7 +92,7 @@ public class IMFragment extends BaseFragment<IMViewInterface,IMPresenter> implem
         View view = inflater.inflate(R.layout.activity_im,container,false);
 
         // TODO: 2017/12/28 这里需要从服务器获取会话id（即roomId）
-        joinConversation("5a4d97ab5b90c830ff7b79d6");
+        joinConversation("5a4dc98a5b90c830ff7b7a51");
         //joinConversation(RoomInfo.getRoomInfo().getConvId());
 
         initView(view);

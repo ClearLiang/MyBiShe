@@ -16,6 +16,7 @@ import test.com.MyBiShe.tools.EventBusUtils;
 
 
 public abstract class BaseFragment<V,T extends BasePresenter<V>> extends Fragment {
+    protected static final String TAG = "信息：";
     protected Bundle mBundle = new Bundle();
     protected T mPresenter;
     protected Activity mActivity;

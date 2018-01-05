@@ -23,6 +23,7 @@ import com.jakewharton.rxbinding.view.RxView;
 import java.util.concurrent.TimeUnit;
 
 import rx.functions.Action1;
+import test.com.MyBiShe.GlobalConstants;
 import test.com.MyBiShe.entity.User;
 import test.com.MyBiShe.fragment.ManagerFragment;
 import test.com.MyBiShe.fragment.MyFragment;
@@ -41,11 +42,6 @@ import test.com.MyBiShe.interfaces.MainViewInterface;
 public class MainActivity extends BaseActivity<MainViewInterface,MainPresenter> implements MainViewInterface {
     private FloatingActionButton mFab;
     private BottomNavigationView navigation;
-
-    @Override
-    protected MainPresenter createPresenter() {
-        return new MainPresenter(this);
-    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -104,6 +100,11 @@ public class MainActivity extends BaseActivity<MainViewInterface,MainPresenter> 
     }
 
     @Override
+    protected MainPresenter createPresenter() {
+        return new MainPresenter(this);
+    }
+
+    @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if ((keyCode == KeyEvent.KEYCODE_BACK)) {
             showNormalDialog(MainActivity.this);
@@ -115,7 +116,7 @@ public class MainActivity extends BaseActivity<MainViewInterface,MainPresenter> 
 
     private void showNormalDialog(Context context){
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setMessage("确认注销吗？");
+        builder.setMessage("确认退出吗？");
         builder.setTitle("提示");
         builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
             @Override
@@ -147,6 +148,7 @@ public class MainActivity extends BaseActivity<MainViewInterface,MainPresenter> 
     }
     private void gotoSquareConversation() {
         LeanCloudManager.getInstance().createConversation("聊天室");
+        GlobalConstants.isCreatedConversation = true;
         Intent intent = new Intent(MainActivity.this, CameraActivity.class);
         startActivity(intent);
     }

@@ -16,6 +16,9 @@ import android.widget.FrameLayout;
 import android.widget.Toast;
 
 
+import com.avos.avoscloud.im.v2.AVIMConversation;
+import com.avos.avoscloud.im.v2.AVIMException;
+import com.avos.avoscloud.im.v2.callback.AVIMConversationCreatedCallback;
 import com.github.faucamp.simplertmp.RtmpHandler;
 import com.seu.magicfilter.utils.MagicFilterType;
 
@@ -26,7 +29,11 @@ import net.ossrs.yasea.SrsRecordHandler;
 
 import java.io.IOException;
 import java.net.SocketException;
+import java.util.Arrays;
 
+import test.com.MyBiShe.GlobalConstants;
+import test.com.MyBiShe.entity.RoomInfo;
+import test.com.MyBiShe.entity.User;
 import test.com.MyBiShe.fragment.IMZhuboFragment;
 import test.com.MyBiShe.tools.EventBusUtils;
 import test.com.MyBiShe.tools.LeanCloudManager;
@@ -72,12 +79,52 @@ public class CameraActivity extends BaseActivity<CameraViewInterface,CameraPrese
             finish();
             return;
         }
+
+        //判断用户是否已经创建过
+        if (GlobalConstants.isCreatedConversation) {
+            //新建一个广场
+            getConversation(User.getUser().getUserName());
+        }
+        else {
+            //获取一个广场
+            updateConversation(LeanCloudManager.getInstance().getClient().getConversation(RoomInfo.getRoomInfo().getConvId()));
+        }
+
         fragment = new IMZhuboFragment();
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction ft = fragmentManager.beginTransaction();
         ft.replace(R.id.frame_video_push,fragment);
         ft.commit();
 
+    }
+
+    /**
+     * 主动刷新 UI
+     *
+     * @param conversation
+     */
+    protected void updateConversation(AVIMConversation conversation) {
+        if (null != conversation) {
+            fragment.setConversation(conversation);
+        }
+    }
+
+    /**
+     * 获取 conversation
+     * 为了避免重复的创建，createConversation 参数 isUnique 设为 true·
+     */
+    protected void getConversation(final String memberId) {
+        LeanCloudManager.getInstance().getClient().createConversation(
+                Arrays.asList(memberId), "", null, false, true, new AVIMConversationCreatedCallback() {
+                    @Override
+                    public void done(AVIMConversation avimConversation, AVIMException e) {
+                        if (null != e) {
+                            Log.i(TAG,e.getMessage());
+                        } else {
+                            updateConversation(avimConversation);
+                        }
+                    }
+                });
     }
 
     private void initPublisher() {

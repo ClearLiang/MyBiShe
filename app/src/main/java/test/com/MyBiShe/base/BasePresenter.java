@@ -11,6 +11,7 @@ import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 
 public abstract class BasePresenter<T> {
+    protected static final String TAG = "信息：";
     Reference<T> mViewRef;  //防止发生内存泄露，使用弱引用
     private CompositeSubscription mCompositeSubscription;//复合订阅
 
